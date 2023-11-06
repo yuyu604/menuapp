@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<!-- saved from url=(0265)https://www.weebly.com/ajax/apps/generateMap.php?map=google&elementid=947150896617561703&ineditor=0&control=3&width=auto&height=250px&overviewmap=0&scalecontrol=0&typecontrol=0&zoom=15&long=-99.90181310000003&lat=31.9685988&domain=www&point=1&align=1&reseller=false -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>.gm-style-moc{background-color:rgba(0,0,0,.45);pointer-events:none;text-align:center;-webkit-transition:opacity ease-in-out;-o-transition:opacity ease-in-out;transition:opacity ease-in-out}.gm-style-mot{color:white;font-family:Roboto,Arial,sans-serif;font-size:22px;margin:0;position:relative;top:50%;-o-transform:translateY(-50%);transform:translateY(-50%);-webkit-transform:translateY(-50%);-ms-transform:translateY(-50%)}sentinel{}
+</style><style>.gm-style img{max-width: none;}.gm-style {font: 400 11px Roboto, Arial, sans-serif; text-decoration: none;}</style>
+		<title>Google Maps Output</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		
+		<style>
+			html, body, #mapContainer {
+				margin: 0;
+				padding: 0;
+				height: 100%;
+			}
+
+			#mapContainer {
+				width: 100%;
+				text-align: center;
+			}
+
+			a {
+				color: #06C;
+				text-decoration: none;
+			}
+
+			a:visited {
+				color: #06C;
+			}
+
+			.gm-style .gm-style-iw-c {
+				border-radius: 0 !important;
+			}
+
+			.gm-style-iw {
+				text-align: left;
+			}
+
+			.leaflet-popup-content-wrapper-left {
+				width: 50%;
+				display: inline-block;
+			}
+
+			.leaflet-popup-content-wrapper-left a {
+				text-decoration: underline;
+				color: #333;
+			}
+
+			.leaflet-popup-content-wrapper-right {
+				width: 50%;
+				text-align: right;
+				display: inline-block;
+				vertical-align: top;
+			}
+
+			.leaflet-popup-content-wrapper-right a {
+				text-decoration: underline;
+				color: #333;
+			}
+
+			.leaflet-popup-content-wrapper-right button {
+				border: none;
+				background: none;
+				text-decoration: underline;
+				color: #333;
+				cursor: pointer;
+			}
+		</style>
+		<script type="text/javascript" src="./js"></script>
+		<script type="text/javascript">
+			//<![CDATA[
+			const primaryColor = '000';
+			const primaryContrastColor = 'FFF';
+
+			// send a cross domain iframe mesage to the parent to resize the frame to this height
+			var resizeMessage = function(event) {
+				var imageHeight = document.getElementById('mapContainer').clientHeight;
+
+				window.parent.postMessage(
+					imageHeight,
+					'*'
+				);
+			};
+
+			function setMarkerIcon(point, svg) {
+				point.setIcon({
+					url: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg),
+				});
+			}
+
+			function createMarkerSvg(isFilled = true) {
+				const pinColor = isFilled ? primaryColor : primaryContrastColor;
+				const pinBorderColor = primaryColor;
+				const pinCircleColor = primaryContrastColor;
+				const pinCircleBorderColor = isFilled ? primaryContrastColor : primaryColor;
+				return '<svg width="24" height="34" viewBox="0 0 24 34" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M23 11.9403C23 13.3823 22.4408 15.3712 21.4847 17.6402C20.54 19.8822 19.2523 22.2959 17.8934 24.5521C16.5353 26.8069 15.118 28.8845 13.9233 30.4526C13.3252 31.2377 12.7912 31.8842 12.3547 32.3576C12.2246 32.4987 12.1062 32.6211 12 32.7251C11.8938 32.6211 11.7754 32.4987 11.6453 32.3576C11.2088 31.8842 10.6748 31.2377 10.0767 30.4526C8.88205 28.8845 7.46474 26.8069 6.10661 24.5521C4.74766 22.2959 3.45995 19.8822 2.51528 17.6402C1.5592 15.3712 1 13.3823 1 11.9403C1 5.90283 5.92016 1 12 1C18.0798 1 23 5.90283 23 11.9403Z" fill="#'+pinColor+'" stroke="#'+pinBorderColor+'" stroke-width="2"/><circle cx="12" cy="12" r="6" fill="#'+pinCircleColor+'" stroke="#'+pinCircleBorderColor+'" stroke-width="2"/></svg>';
+			}
+
+			function clickViewMoreLink(id) {
+				if (id) {
+					var url = (window.location != window.parent.location)
+							? document.referrer
+							: document.location.href;
+
+					var postData = {
+						view_more_info_click: id
+					}
+					window.parent.postMessage(JSON.stringify(postData), url);
+				}
+			}
+
+			function gLoad() {
+				var touchSupported = (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch),
+						forceTouch = false;
+
+				var forceMapDrag = false;
+
+				var myLatLng = new google.maps.LatLng(31.9685988, -99.90181310000003);
+				var locations = null;
+				var mapOptions = {
+					scrollwheel: false,
+					center: myLatLng,
+					zoom: 15,
+					panControl: false, zoomControl: true, zoomControlOptions: { style: google.maps.ZoomControlStyle.SMALL },
+					scaleControl: false,
+					mapTypeControl: false,
+					streetViewControl: false,
+					mapTypeId: google.maps.MapTypeId.ROADMAP,
+					draggable: false				};
+
+				if ((touchSupported || forceTouch) && !forceMapDrag) {
+					mapOptions.draggable = false;
+					mapOptions.panControl = false;
+					mapOptions.scrollwheel = false;
+					mapOptions.zoomControlOptions = {style: google.maps.ZoomControlStyle.SMALL};
+					mapOptions.zoomControl = true;
+				}
+
+				// Use pre-v3.22 controls until the element can be updated with options for the new controls
+				google.maps.controlStyle = 'azteca';
+
+				function renderMap(options) {
+					var map = new google.maps.Map(document.getElementById("map"), options);
+					var activeMarker;
+					var hoverMarkerIndex;
+					var hasMapPoint = true;
+					var activeMarkerId = null;
+					// reset zoom level to display all markers
+					var bounds = new google.maps.LatLngBounds();
+
+					// marker designs
+					const filledMarker = createMarkerSvg(true);
+					const strokedMarker = createMarkerSvg(false);
+
+					var markers = [];
+					var infowindow = new google.maps.InfoWindow();
+
+					var isMarkerFixedInCenter = false;
+
+					if (hasMapPoint) {
+						var point = new google.maps.Marker({
+							position: myLatLng,
+							map: map,
+							optimized: false
+						});
+						setMarkerIcon(point, filledMarker);
+					}
+
+					if (locations) {
+						for (let i = 0; i < locations.length; i++) {
+							const shop = locations[i];
+							if (shop.lat && shop.long) {
+								const marker = new google.maps.Marker({
+									id: shop.id,
+									position: new google.maps.LatLng(shop.lat, shop.long),
+									map: map,
+									animation: 4,
+									optimized: false,
+									zIndex: i
+								});
+								bounds.extend(marker.position);
+								setMarkerIcon(marker, strokedMarker);
+
+								google.maps.event.addListener(marker, 'click', (function (marker, i) {
+									return function () {
+										var infowindowContent =
+												'<div class="leaflet-popup-content-wrapper-left">' +
+												'<h3 class="firstHeading">' + shop.display_name + '</h3>' +
+												'<div id="bodyContent">' +
+												'<p>' + shop.address + '</p>';
+
+										if (shop.phone) {
+											infowindowContent += '<p><a href="tel:' + shop.phone + '">' + shop.phone + '</a></p>';
+										}
+
+										infowindowContent +=
+												'</div></div>' +
+												'<div class="leaflet-popup-content-wrapper-right"><p><button onclick="clickViewMoreLink(\'' + marker.id + '\')">View more info</button></p>' +
+												'</div>';
+
+										infowindow.setContent(infowindowContent);
+										infowindow.open(map, marker);
+
+										// check to see if activeMarker is set
+										// if so, set the icon back to the default
+										activeMarker && activeMarker.setIcon({
+											url: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(strokedMarker),
+										});
+
+										activeMarker && activeMarker.setZIndex(i);
+
+										// set the icon for the clicked marker
+										marker.setIcon({
+											url: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(filledMarker),
+										});
+
+										// clicked marker on top
+										marker.setZIndex(i + 999);
+
+										// update the value of activeMarker
+										activeMarker = marker;
+
+										// relay message of location id to website
+										var url = (window.location != window.parent.location)
+												? document.referrer
+												: document.location.href;
+										var postData = {
+											location_click_event: marker.id
+										}
+										window.parent.postMessage(JSON.stringify(postData), url);
+									};
+								})(marker, i));
+
+								markers.push(marker);
+
+								// Add hover state to marker
+								marker.addListener('mouseover', function () {
+									marker.setIcon({
+										url: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(filledMarker),
+									});
+									marker.setZIndex(i + 1000);
+								});
+
+								// remove hover state if marker is not currently active
+								marker.addListener('mouseout', function () {
+									if (marker !== activeMarker) {
+										marker.setIcon({
+											url: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(strokedMarker),
+										});
+										marker.setZIndex(i);
+									}
+								});
+							}
+						}
+
+						//now fit the map to the newly inclusive bounds
+						map.fitBounds(bounds);
+					}
+
+					
+					if (activeMarkerId) {
+						var index = markers.findIndex( x => x.id == activeMarkerId );
+						google.maps.event.trigger(markers[index], 'click');
+						activeMarkerId = null;
+					}
+
+					// Maps loaded hidden (like in an accordion) don't center property as their width is often detected as 0.
+					// Detect when the iFrame "resizes" and reset the center
+					google.maps.event.addDomListener(window, 'resize', function() {
+						google.maps.event.trigger(map, 'resize');
+						map.setCenter(myLatLng);
+						if (locations) {
+							map.fitBounds(bounds);
+						}
+					});
+					var SET_TIMEOUT_MS = 200;
+					if (isMarkerFixedInCenter) {
+						google.maps.event.addListener(map, 'center_changed', function() {
+							// 0.2 seconds after the center of the map has changed,
+							// set back the marker position.
+							window.setTimeout(function() {
+								var center = map.getCenter();
+								point.setPosition(center);
+							}, SET_TIMEOUT_MS);
+						});
+
+						google.maps.event.addListener(map, 'dragend', function(evt) {
+							// Wait for the center to be changed before saving the Lat/Lng
+							window.setTimeout(function() {
+								var url = (window.location != window.parent.location)
+									? document.referrer
+									: document.location.href;
+								var center = map.getCenter();
+								var postData = {
+									lat: center.lat(),
+									lng: center.lng(),
+									message: 'marker_position_update_947150896617561703'
+								}
+								window.parent.postMessage(JSON.stringify(postData), url);
+							}, SET_TIMEOUT_MS + 25);
+
+						});
+					}
+
+					map.addListener('click', function() {
+						var url = (window.location != window.parent.location)
+							? document.referrer
+							: document.location.href;
+						window.parent.postMessage('map_click_event_947150896617561703', url);
+					});
+
+					window.addEventListener('message', function({ data = {} }) {
+						if (data.event && data.data && locations) {
+							var eventType = data.event;
+							var activeLocationId = data.data;
+							var index = markers.findIndex( x => x.id == activeLocationId );
+
+							if (eventType === 'open:location') {
+								google.maps.event.trigger(markers[index], 'click');
+								map.fitBounds(bounds);
+							}
+
+							if (eventType === 'hover:location') {
+								if (hoverMarkerIndex) {
+									google.maps.event.trigger(markers[hoverMarkerIndex], 'mouseout');
+								}
+								google.maps.event.trigger(markers[index], 'mouseover');
+								hoverMarkerIndex = index;
+								map.fitBounds(bounds);
+							}
+						}
+					});
+				};
+
+				var mapZoomScale = 0;
+				if (mapZoomScale > 0) {
+					var maxZoomService = new google.maps.MaxZoomService();
+					maxZoomService.getMaxZoomAtLatLng({
+						lat: parseFloat(31.9685988),
+						lng: parseFloat(-99.90181310000003),
+					}, function (response)  {
+						const success = response.status === 'OK';
+						var maxZoomLevel = success ? response.zoom : 18;
+						var zoomLevel = Math.round(maxZoomLevel * (mapZoomScale / 100));
+						zoomLevel = zoomLevel < 1 ? mapOptions.zoom : zoomLevel;
+						mapOptions.zoom = zoomLevel;
+						renderMap(mapOptions);
+					});
+				} else {
+					renderMap(mapOptions);
+				}
+			}
+
+			//]]>
+		</script>
+
+	<script type="text/javascript" charset="UTF-8" src="./common.js.下載"></script><script type="text/javascript" charset="UTF-8" src="./util.js.下載"></script><script type="text/javascript" charset="UTF-8" src="./map.js.下載"></script><script type="text/javascript" charset="UTF-8" src="./marker.js.下載"></script><script type="text/javascript" charset="UTF-8" src="./ViewportInfoService.GetViewportInfo"></script><script type="text/javascript" charset="UTF-8" src="./onion.js.下載"></script><script type="text/javascript" charset="UTF-8" src="./AuthenticationService.Authenticate"></script><script type="text/javascript" charset="UTF-8" src="./QuotaService.RecordEvent"></script><script type="text/javascript" charset="UTF-8" src="./infowindow.js.下載"></script></head>
+	<body onload="gLoad();" style="margin: 0; padding: 0;">
+
+	<div id="mapContainer">
+		<div id="map" style="height: 250px; max-width: 100%; position: relative; overflow: hidden;"><div style="height: 100%; width: 100%; position: absolute; top: 0px; left: 0px; background-color: rgb(229, 227, 223);"><div class="gm-style" style="position: absolute; z-index: 0; left: 0px; top: 0px; height: 100%; width: 100%; padding: 0px; border-width: 0px; margin: 0px;"><div tabindex="0" aria-label="地圖" aria-roledescription="地圖" role="region" style="position: absolute; z-index: 0; left: 0px; top: 0px; height: 100%; width: 100%; padding: 0px; border-width: 0px; margin: 0px; cursor: default; touch-action: pan-x pan-y;"><div style="z-index: 1; position: absolute; left: 50%; top: 50%; width: 100%; will-change: transform;"><div style="position: absolute; left: 0px; top: 0px; z-index: 100; width: 100%;"><div style="position: absolute; left: 0px; top: 0px; z-index: 0;"></div></div><div style="position: absolute; left: 0px; top: 0px; z-index: 101; width: 100%;"></div><div style="position: absolute; left: 0px; top: 0px; z-index: 102; width: 100%;"></div><div style="position: absolute; left: 0px; top: 0px; z-index: 103; width: 100%;"><div style="position: absolute; left: 0px; top: 0px; z-index: -1;"></div></div><div style="position: absolute; left: 0px; top: 0px; z-index: -1;"><div style="position: absolute; left: 0px; top: 0px;"><img alt="" src="./StaticMapService.GetMapImage" style="width: 623px; height: 250px;"></div></div><div style="position: absolute; left: 0px; top: 0px; z-index: 0;"></div></div><div style="z-index: 3; position: absolute; height: 100%; width: 100%; padding: 0px; border-width: 0px; margin: 0px; left: 0px; top: 0px; touch-action: pan-x pan-y;"><div style="z-index: 4; position: absolute; left: 50%; top: 50%; width: 100%; will-change: transform;"><div style="position: absolute; left: 0px; top: 0px; z-index: 104; width: 100%;"></div><div style="position: absolute; left: 0px; top: 0px; z-index: 105; width: 100%;"></div><div style="position: absolute; left: 0px; top: 0px; z-index: 106; width: 100%;"><span id="6CCEC24A-1BD4-42CD-AA60-990C7D60C2DD" style="display: none;">若要瀏覽，請按箭頭鍵。</span></div><div style="position: absolute; left: 0px; top: 0px; z-index: 107; width: 100%;"></div></div></div><div class="gm-style-moc" style="z-index: 4; position: absolute; height: 100%; width: 100%; padding: 0px; border-width: 0px; margin: 0px; left: 0px; top: 0px; opacity: 0;"><p class="gm-style-mot"></p></div></div><iframe aria-hidden="true" frameborder="0" tabindex="-1" style="z-index: -1; position: absolute; width: 100%; height: 100%; top: 0px; left: 0px; border: none;" src="./saved_resource.html"></iframe><div style="pointer-events: none; width: 100%; height: 100%; box-sizing: border-box; position: absolute; z-index: 1000002; opacity: 0; border: 2px solid rgb(26, 115, 232);"></div></div></div></div>
+	</div>
+
+	
+	
+	<div style="position: absolute; left: 0px; top: -2px; height: 1px; overflow: hidden; visibility: hidden; width: 1px;"><span style="position: absolute; font-size: 300px; width: auto; height: auto; margin: 0px; padding: 0px; font-family: Roboto, Arial, sans-serif;">BESbswy</span></div></body></html>
